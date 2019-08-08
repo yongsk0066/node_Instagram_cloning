@@ -6,7 +6,7 @@ import { adjectives, nouns } from "./words";
 import nodemailer from "nodemailer";
 import sgTransport from "nodemailer-sendgrid-transport";
 import { FieldConfigUtils } from "prisma-generate-schema/dist/src/generator/generator";
-
+import jwt from "jsonwebtoken";
 
 
 export const generateSecret = () => {
@@ -30,7 +30,9 @@ export const sendSecretMail = (address, secret) => {
         from: "example@example.com",
         to: address,
         subject: "Login Secret for Prismagram",
-        html: `hello! Your login Secret it ${secret}.<br/>Copy paste on the page to login`
+        html: `hello! Your login Secret it <b>${secret}</b>.<br/>Copy paste on the page to login`
     };
     return sendMail(email);
 };
+
+export const generateToken = (id) => jwt.sign({id}, process.env.JWT_SECRET);
